@@ -1,0 +1,14 @@
+{
+  "name": "wa-validator",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "whatsapp-web.js": "latest",
+    "qrcode": "^1.5.3",
+    "cors": "^2.8.5"
+  }
+}
