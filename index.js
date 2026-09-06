@@ -82,13 +82,19 @@ app.get('/api/qr', async (req, res) => {
 app.post('/api/logout', async (req, res) => {
     try {
         if (isConnected) {
-            await client.logout();
-        } else {
-            // Force destroy and re-initialize to generate a fresh QR code
-            currentQR = '';
-            await client.destroy().catch(() => {});
-            client.initialize();
+            try {
+                await client.logout();
+            } catch (logoutErr) {
+                console.warn('Logout failed (frame detached/crashed), forcing destroy...', logoutErr.message);
+            }
         }
+        
+        // Selalu force destroy dan re-initialize untuk mereset session
+        currentQR = '';
+        isConnected = false;
+        await client.destroy().catch(() => {});
+        client.initialize();
+        
         res.json({ success: true });
     } catch (err) {
         res.status(500).json({ error: err.toString() });
